@@ -18,5 +18,19 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
+      - name: Independent toolchain contract source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          repository: isomorphisms/ai-ci
+          ref: 2843a804fea1bbc4e3e40b6c236064bb1d41f316
+          path: .qualification/aici
+          persist-credentials: false
+      - name: Exact ICK source producer
+        id: ick
+        uses: isomorphisms/ai-ci/ick-host@2843a804fea1bbc4e3e40b6c236064bb1d41f316
       - name: Compile and exercise synthetic transport
-        run: make check
+        run: make check ICK="${{ steps.ick.outputs.compiler }}"
+      - name: Compile shared toolchain verifier through ICK
+        run: '"${{ steps.ick.outputs.compiler }}" -fno-link-libatomic -std=c11 -O2 .qualification/aici/src/aici.c -o build/toolchain-check'
+      - name: Require declared ICK toolchain
+        run: build/toolchain-check verify .qualification/aici/contracts/build-toolchain-v0.contract.tsv .
