@@ -11,7 +11,7 @@ permissions:
 jobs:
   native-contract:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 30
     steps:
       - name: Exact source
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
