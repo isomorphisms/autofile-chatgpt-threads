@@ -15,8 +15,12 @@ cookie, bearer token, arbitrary URL, arbitrary method or arbitrary request
 body.
 
 ```text
-make check
+make check ICK=/verified/ick
 ```
 
 No test contacts ChatGPT or reads user data.
+
+Maintained builds require the qualified ICK producer declared in
+`ci/build-toolchain.tsv`. A generic host compiler may be used only for an
+explicitly labelled local diagnostic; it is not acceptance evidence.
 
